@@ -43,8 +43,8 @@
         :available-media-types accepted-types
         ;;        :put! (fn [ctx] (db/put-data :weight instance id (read-body ctx) (read-metadata ctx)))
         :put! (fn [ctx]
-                (dosync (let [new-weight (get-in ctx [:request :params])]
-                          (db/put-data :weight instance new-weight))))
+                (let [new-weight (get-in ctx [:request :params])]
+                          (db/put-data :weight instance new-weight)))
   ;;      :delete! (fn [_] (db/delete-document instance id (read-metadata _)))
         ;;:handle-ok (fn [_] (standard-response _ (::resource _)))
         :handle-ok (fn [ctx] (::resource ctx))))))

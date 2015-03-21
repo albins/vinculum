@@ -34,9 +34,9 @@
          :weight (if (contains? data :weight)
                    (let [date (:date data)
                          statement (sql/sql (sql/insert db-type :lifelog.weight []
-                                                        (sql/values {:weight (:weight data)
-                                                                     :date date})))]
+                                                        (sql/values {:weight 7})))]
                      (.println (System/out) statement)
-                     (jdbc/execute! instance statement))
+                     (jdbc/with-db-connection [db-conn instance]
+                       (jdbc/execute! db-conn statement)))
                    :error)
          :else "WHAT ARE YOU DOING!?"))
