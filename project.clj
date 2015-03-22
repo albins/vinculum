@@ -19,5 +19,6 @@
                  [ragtime "0.3.8"] ;; database migrations -- see https://github.com/weavejester/ragtime/wiki/Getting-Started
                  [org.clojure/java.jdbc "0.3.6"] ;; SQL -- see https://github.com/clojure/java.jdbc
                  [postgresql/postgresql "8.4-702.jdbc4"]
+                 [org.clojure/data.json "0.2.6"]
                  [ring/ring-core "1.2.1"]
                  [org.clojure/core.match "0.3.0-alpha4"]]) ;; Web
