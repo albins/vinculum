@@ -12,3 +12,4 @@ pom.xml.asc
 /.nrepl-port
 /client/src/weight/parsetab.py
 /client/src/weight/parser.out
+/resources
