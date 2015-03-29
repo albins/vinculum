@@ -3,8 +3,9 @@
   :url "http://example.com/FIXME"
   :plugins [
 ;;            [lein-ring "0.8.11"]
-            [lein-cljsbuild "1.0.3"]
+            [lein-cljsbuild "1.0.5"]
             [lein-environ "1.0.0"]
+            [lein-ancient "0.6.5"]
 ;;            [ragtime/ragtime.lein "0.3.8"]
 ;;            [lein-typed "0.3.5"]
             ]
@@ -19,21 +20,21 @@
             :database "jdbc:postgresql://localhost/albin?user=albin?pass=brok"
             }
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2511" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-3126" :scope "provided"]
                  [ring "1.3.2"]
-                 [ring/ring-defaults "0.1.3"]
-                 [compojure "1.3.1"] ;; Routing
+                 [ring/ring-defaults "0.1.4"]
+                 [compojure "1.3.2"] ;; Routing
                  [enlive "1.1.5"]
                  [cljs-ajax "0.3.10"]
-                 [om "0.8.0-rc1"]
+                 [org.omcljs/om "0.8.8"]
 ;;                 [org.clojure/core.typed "0.2.84"]
                  [environ "1.0.0"]
                  [ring-cors "0.1.6"]
                  [liberator "0.12.2"] ;; API generation
-                 [sqlingvo "0.7.9"] ;; PostgreSQL -- see https://github.com/r0man/sqlingvo
+                 [sqlingvo "0.7.10"] ;; PostgreSQL -- see https://github.com/r0man/sqlingvo
                  [ragtime "0.3.8"] ;; database migrations -- see https://github.com/weavejester/ragtime/wiki/Getting-Started
                  [org.clojure/java.jdbc "0.3.6"] ;; SQL -- see https://github.com/clojure/java.jdbc
-                 [postgresql/postgresql "8.4-702.jdbc4"]
+                 [postgresql/postgresql "9.3-1102.jdbc41"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
 
@@ -49,15 +50,15 @@
     :profiles {:dev {:source-paths ["env/dev/clj"]
                      :test-paths ["test/clj"]
 
-                     :dependencies [[figwheel "0.2.1-SNAPSHOT"]
-                                    [figwheel-sidecar "0.2.1-SNAPSHOT"]
-                                    [com.cemerick/piggieback "0.1.3"]
-                                    [weasel "0.4.2"]]
+                     :dependencies [[figwheel "0.2.5"]
+                                    [figwheel-sidecar "0.2.5"]
+                                    [com.cemerick/piggieback "0.1.5"]
+                                    [weasel "0.6.0"]]
 
                      :repl-options {:init-ns vinculum.server
                                     :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
-                     :plugins [[lein-figwheel "0.2.1-SNAPSHOT"]]
+                     :plugins [[lein-figwheel "0.2.5"]]
 
                      :figwheel {:http-server-root "public"
                                 :server-port 3449
