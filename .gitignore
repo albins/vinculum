@@ -10,3 +10,5 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
+/client/src/weight/parsetab.py
+/client/src/weight/parser.out
