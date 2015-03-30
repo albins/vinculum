@@ -37,8 +37,9 @@
   (let [{:keys [width height]}    div
         chart (js/google.visualization.LineChart. (.getElementById js/document id))
         options (chart-options) ;; fixme: use width/height!
-        draw-stats (clj->js (cons ["Date" "Weight"] data))]
-    (.draw chart data options)))
+        draw-stats (js/google.visualization.arrayToDataTable
+                    (clj->js (cons ["Date" "Weight"] data)))]
+    (.draw chart draw-stats options)))
 
 (defn get-div-dimensions
   "Get width and height of a div with a specified id."
@@ -73,21 +74,24 @@
           (while (.hasChildNodes n)
             (.removeChild n (.-lastChild n))))
         (when-let [data (seq (:data cursor))]
-          (draw-chart-chart data (:div cursor) opts))))))
+          (draw-line-chart data (:div cursor) opts))))))
 
-(defn handler [response]
-  (swap! app-state assoc-in [:weight :data] (map #(list (:date %) (:weight %)) response)))
-
-(GET "http://localhost:3000/weight" :handler handler :format :edn)
+(defn fetch-data []
+  (let [handler (fn [response]
+                  (swap! app-state assoc-in [:weight :data]
+                         (map #(list (:date %) (:weight %)) response)))]
+    (GET "http://localhost:3000/weight" :handler handler :format :edn)))
 
 (defn main []
+  (fetch-data)
   (om/root
-   (fn [data owner]
-     (dom/h1 "Hello")
-      (om/component
-       (apply dom/ul nil
-              (map (fn [text] (dom/li nil text)) (get-in data [:weight :data])))))
-    app-state
-    {:target (. js/document (getElementById "app"))}))
-
-(.setOnLoadCallback js/google draw-chart)
+ (fn [app owner]
+   (reify
+     om/IRender
+     (render [_]
+       (html
+        [:div
+         [:h1 "Weight chart"]
+         [:div {:id "chart"}]
+         (om/build line-chart (:weight app) {:opts {:id "chart"}})]))))
+ app-state {:target (. js/document (getElementById "app"))}))
