@@ -33,6 +33,13 @@
         chart (get-chart)]
     (.draw chart data options)))
 
+(defn- draw-line-chart [data div {:keys [id]}]
+  (let [{:keys [width height]}    div
+        chart (js/google.visualization.LineChart. (.getElementById js/document id))
+        options (chart-options) ;; fixme: use width/height!
+        draw-stats (clj->js (cons ["Date" "Weight"] data))]
+    (.draw chart data options)))
+
 (defn get-div-dimensions
   "Get width and height of a div with a specified id."
   [id]
@@ -58,7 +65,7 @@
     om/IDidMount
     (did-mount [_]
       (when-let [data (seq (:data cursor))]
-        (draw-chart data (:div cursor) opts)))
+        (draw-line-chart data (:div cursor) opts)))
     om/IDidUpdate
     (did-update [_ _ _]
       (let [{:keys [width height]} (:div cursor)]
@@ -66,7 +73,7 @@
           (while (.hasChildNodes n)
             (.removeChild n (.-lastChild n))))
         (when-let [data (seq (:data cursor))]
-          (draw-chart data (:div cursor) opts))))))
+          (draw-chart-chart data (:div cursor) opts))))))
 
 (defn handler [response]
   (swap! app-state assoc-in [:weight :data] (map #(list (:date %) (:weight %)) response)))
