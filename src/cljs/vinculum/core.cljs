@@ -69,8 +69,15 @@
 (defn fetch-data []
   (let [handler (fn [response]
                   (swap! app-state assoc-in [:weight :data]
-                         (map #(list (:date %) (:weight %)) response)))]
-    (GET "http://localhost:3000/weight" :handler handler :format :edn)))
+                         (map #(list (:date %) (:weight %)) response)))
+        error-handler (fn [{:keys [status status-text]}]
+                        (print status status-text)
+                        (swap! app-state assoc :error {:status status
+                                                       :status-text status-text}))]
+    (GET "/weight"
+         :handler handler
+         :format :edn
+         :error-handler #(print "ERROR!"))))
 
 (defn main []
   (fetch-data)
@@ -80,8 +87,9 @@
      om/IRender
      (render [_]
        (html
-        [:div
+        [:div {:class "container"}
          [:h1 "Weight chart"]
          [:div {:id "chart"}]
+         [:div {:id "error"}]
          (om/build line-chart (:weight app) {:opts {:id "chart"}})]))))
  app-state {:target (. js/document (getElementById "app"))}))
