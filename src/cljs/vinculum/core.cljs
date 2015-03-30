@@ -81,6 +81,7 @@
 
 (defn main []
   (fetch-data)
+  (js/setInterval fetch-data 10000)
   (om/root
  (fn [app owner]
    (reify
