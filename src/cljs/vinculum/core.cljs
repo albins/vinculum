@@ -1,24 +1,20 @@
 (ns vinculum.core
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [ajax.core :refer [GET POST]]))
+            [ajax.core :refer [GET POST]]
+            [sablono.core :as html :refer-macros [html]]))
+
+(enable-console-print!)
 
 
 (.load js/google "visualization" "1" (clj->js {:packages ["corechart"]}))
 
-;; (defn add-rows []
-;;    (js/google.visualization.arrayToDataTable
-;;      (clj->js [["Date" "Weight"]
-;;                [(js/Date. 2015 01 01) 8]
-;;                [(js/Date. 2015 02 01) 13]
-;;                [(js/Date. 2015 03 01) 24]])))
-
-
-(defonce app-state (atom {:list []}))
+(defonce app-state (atom {:weight {:div {:width "100%" :height 600}
+                                   :data []}}))
 
 (defn add-rows []
    (js/google.visualization.arrayToDataTable
-     (clj->js (cons ["Date" "Weight"] (:list @app-state)))))
+     (clj->js (cons ["Date" "Weight"] (get-in @app-state [:weight :data])))))
 
 (defn chart-options []
   (clj->js {:title  "Weight"
@@ -31,14 +27,49 @@
 (defn get-chart []
   (js/google.visualization.LineChart. (.getElementById js/document "content" )))
 
-(defn draw-chart []
+(defn- draw-chart []
   (let [data (add-rows)
-      options (chart-options)
-      chart (get-chart)]
+        options (chart-options)
+        chart (get-chart)]
     (.draw chart data options)))
 
+(defn get-div-dimensions
+  "Get width and height of a div with a specified id."
+  [id]
+  (let [e (.getElementById js/document id)
+        x (.-clientWidth e)
+        y (.-clientHeight e)]
+    {:width x :height y}))
+
+(defn line-chart [cursor owner {:keys [id chart] :as opts}]
+  (reify
+    om/IWillMount
+    (will-mount [_]
+      ;; Add event listener that will update width & height when window is resized
+      (.addEventListener js/window
+                         "resize" (fn []
+                                    (let [{:keys [width height]} (get-div-dimensions id)]
+                                      (om/update! cursor :div {:width width :height height})))))
+    om/IRender
+    (render [_]
+      (let [{:keys [width height]} (:div cursor)]
+        (html
+         [:div {:id id :width width :height height}])))
+    om/IDidMount
+    (did-mount [_]
+      (when-let [data (seq (:data cursor))]
+        (draw-chart data (:div cursor) opts)))
+    om/IDidUpdate
+    (did-update [_ _ _]
+      (let [{:keys [width height]} (:div cursor)]
+        (let [n (.getElementById js/document id)]
+          (while (.hasChildNodes n)
+            (.removeChild n (.-lastChild n))))
+        (when-let [data (seq (:data cursor))]
+          (draw-chart data (:div cursor) opts))))))
+
 (defn handler [response]
-  (swap! app-state assoc :list (map #(list (:date %) (:weight %)) response)))
+  (swap! app-state assoc-in [:weight :data] (map #(list (:date %) (:weight %)) response)))
 
 (GET "http://localhost:3000/weight" :handler handler :format :edn)
 
@@ -48,7 +79,7 @@
      (dom/h1 "Hello")
       (om/component
        (apply dom/ul nil
-              (map (fn [text] (dom/li nil text)) (:list data)))))
+              (map (fn [text] (dom/li nil text)) (get-in data [:weight :data])))))
     app-state
     {:target (. js/document (getElementById "app"))}))
 

@@ -6,7 +6,7 @@
             [lein-cljsbuild "1.0.5"]
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
-;;            [ragtime/ragtime.lein "0.3.8"]
+            [joplin.lein "0.2.10"]
 ;;            [lein-typed "0.3.5"]
             ]
 ;;  :main vinculum.server
@@ -16,9 +16,13 @@
   :source-paths ["src/clj"]
   :repl-options {:timeout 200000} ;; Defaults to 30000 (30 seconds)
   :test-paths ["spec/clj"]
-  :ragtime {:migrations ragtime.sql.files/migrations
-            :database "jdbc:postgresql://localhost/albin?user=albin?pass=brok"
-            }
+  :joplin {:migrators {:sql-mig "db/migrations"}
+           :seeds {:sql-seed "db/seeds"}
+           :databases {:sql-dev {:type :jdbc
+                                 :url  "jdbc:postgresql://localhost/albin?user=albin&password=albin"}}
+           :environments {:dev [{:db :sql-dev
+                                 :migrator :sql-mig
+                                 :seed :sql-seed}]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-3126" :scope "provided"]
                  [ring "1.3.2"]
@@ -29,10 +33,13 @@
                  [org.omcljs/om "0.8.8"]
 ;;                 [org.clojure/core.typed "0.2.84"]
                  [environ "1.0.0"]
+                 [sablono "0.2.20"]
                  [ring-cors "0.1.6"]
                  [liberator "0.12.2"] ;; API generation
                  [sqlingvo "0.7.10"] ;; PostgreSQL -- see https://github.com/r0man/sqlingvo
-                 [ragtime "0.3.8"] ;; database migrations -- see https://github.com/weavejester/ragtime/wiki/Getting-Started
+;;                 [ragtime/ragtime.sql.files "0.3.8"] ;; database migrations -- see https://github.com/weavejester/ragtime/wiki/Getting-Started
+                 [joplin.core "0.2.10"]
+                 [joplin.jdbc "0.2.10"]
                  [org.clojure/java.jdbc "0.3.6"] ;; SQL -- see https://github.com/clojure/java.jdbc
                  [postgresql/postgresql "9.3-1102.jdbc41"]
                  [org.clojure/data.json "0.2.6"]
