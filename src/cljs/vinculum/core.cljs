@@ -16,27 +16,17 @@
    (js/google.visualization.arrayToDataTable
      (clj->js (cons ["Date" "Weight"] (get-in @app-state [:weight :data])))))
 
-(defn chart-options []
-  (clj->js {:title  "Weight"
-            :width 1000
-            :height 600
+(defn chart-options [width height]
+  (clj->js {:title  ""
+            :width width
+            :height height
             :trendlines { :0 {:visibleInLegend false
                               :opacity 0.3}}}))
-
-;; FIXME: ALL OF THIS IS WRONG
-(defn get-chart []
-  (js/google.visualization.LineChart. (.getElementById js/document "content" )))
-
-(defn- draw-chart []
-  (let [data (add-rows)
-        options (chart-options)
-        chart (get-chart)]
-    (.draw chart data options)))
 
 (defn- draw-line-chart [data div {:keys [id]}]
   (let [{:keys [width height]}    div
         chart (js/google.visualization.LineChart. (.getElementById js/document id))
-        options (chart-options) ;; fixme: use width/height!
+        options (chart-options width height)
         draw-stats (js/google.visualization.arrayToDataTable
                     (clj->js (cons ["Date" "Weight"] data)))]
     (.draw chart draw-stats options)))
