@@ -1,3 +1,4 @@
+/resources/public/js/
 /client/cabal.sandbox.config
 /client/.cabal-sandbox/
 /client/dist/
@@ -12,4 +13,3 @@ pom.xml.asc
 /.nrepl-port
 /client/src/weight/parsetab.py
 /client/src/weight/parser.out
-/resources/public/js
