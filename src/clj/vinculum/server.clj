@@ -139,7 +139,7 @@
     handler))
 
 (defn run-web-server [& [port]]
-  (let [port (Integer. (or port (env :port) 10555))]
+  (let [port (Integer. (or port (env :port) 3000))]
     (print "Starting web server on port" port ".\n")
     (run-jetty http-handler {:port port :join? false})))
 
