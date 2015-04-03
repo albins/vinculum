@@ -19,7 +19,7 @@ In the REPL, type
 ```
 
 The call to `(run)` does two things, it starts the webserver at port
-10555, and also the Figwheel server which takes care of live reloading
+3000, and also the Figwheel server which takes care of live reloading
 ClojureScript code and CSS. Give them some time to start.
 
 Running `(browser-repl)` starts the Weasel REPL server, and drops you
