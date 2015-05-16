@@ -99,4 +99,4 @@
 
     ;; Make Lein clean clean up the compiled JS files, useful to avoid
     ;; problems when switching environs.
-    :clean-targets ^{:protect false} [[:target-path :compile-path] "resources/public/js/"])
+    :clean-targets ^{:protect false} [[:target-path :compile-path] "resources/public/js/" "target/"])
