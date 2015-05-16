@@ -1,14 +1,6 @@
 (defproject vinculum "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
-  :plugins [
-;;            [lein-ring "0.8.11"]
-            [lein-cljsbuild "1.0.5"]
-            [lein-environ "1.0.0"]
-            [lein-ancient "0.6.5"]
-            [joplin.lein "0.2.10"]
-;;            [lein-typed "0.3.5"]
-            ]
 ;;  :main vinculum.server
 ;;  :ring {:handler vinculum.core/handler}
   :license {:name "Eclipse Public License"
@@ -16,13 +8,14 @@
   :source-paths ["src/clj"]
   :repl-options {:timeout 200000} ;; Defaults to 30000 (30 seconds)
   :test-paths ["spec/clj"]
-  :joplin {:migrators {:sql-mig "db/migrations"}
-           :seeds {:sql-seed "db/seeds"}
-           :databases {:sql-dev {:type :jdbc
-                                 :url  "jdbc:postgresql://localhost/albin?user=albin&password=albin"}}
-           :environments {:dev [{:db :sql-dev
-                                 :migrator :sql-mig
-                                 :seed :sql-seed}]}}
+  ;; :joplin {:migrators {:sql-mig "db/migrations"}
+  ;;          :seeds {:sql-seed "db/seeds"}
+  ;;          :databases {:sql-dev {:type :jdbc
+  ;;                                :url  "jdbc:postgresql://localhost/albin?user=albin&password=albin"}}
+  ;;          :environments
+  ;;          {:dev [{:db :sql-dev
+  ;;                  :migrator :sql-mig
+  ;;                  :seed :sql-seed}]}}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-3126" :scope "provided"]
                  [ring "1.3.2"]
@@ -44,6 +37,15 @@
                  [postgresql/postgresql "9.3-1102.jdbc41"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/core.match "0.3.0-alpha4"]]
+
+  :plugins [
+;;            [lein-ring "0.8.11"]
+            [lein-cljsbuild "1.0.5"]
+            [lein-environ "1.0.0"]
+            [lein-ancient "0.6.5"]
+            [joplin.lein "0.2.10"]
+;;            [lein-typed "0.3.5"]
+            ]
 
     :min-lein-version "2.5.0"
     :uberjar-name "vinculum.jar"
