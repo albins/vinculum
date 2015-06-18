@@ -83,14 +83,15 @@
   (fetch-data)
   (js/setInterval fetch-data 10000)
   (om/root
- (fn [app owner]
-   (reify
-     om/IRender
-     (render [_]
-       (html
-        [:div {:class "container"}
-         [:h1 "Weight chart"]
-         [:div {:id "chart"}]
-         [:div {:id "error"}]
-         (om/build line-chart (:weight app) {:opts {:id "chart"}})]))))
- app-state {:target (. js/document (getElementById "app"))}))
+   (fn [app owner]
+     (reify
+       om/IRender
+       (render [_]
+         (html
+          [:div {:class "container"}
+           [:h1 "Weight chart"]
+           [:div {:id "chart"}]
+           [:div {:id "error"}]
+           (om/build line-chart (:weight app) {:opts {:id "chart"}})
+           ]))))
+   app-state {:target (. js/document (getElementById "app"))}))
