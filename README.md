@@ -1,12 +1,16 @@
 # Vinculum
 
-A Clojure lifelogging platform with a RESTful interface and a front-end written in Om.
+** Warning: This code is *pre-proof of concept* quality! I don't even know what I'm doing here.**
 
-So far, it only logs your weight, and it doesn't initialise the database tables.
+## Rationale
+
+Vinculum (named after the Borg central control node) is meant to be a replacement for how I use Emacs' org-mode for life logging, note taking and general organisational tasks, driven by the frustrations of synchronising text-only files and the poverty of an Emacs UI. It's great for text, but it's *awful* for everything else. It intends to log, manage and present data about your life, in the ways that org-mode does and in several others, including rich charts.
+
+Currently, only a very rough REST interface, a small and hackish web front-end and, and a command-line Python client have been implemented.
 
 ## Development
 
-From the standard Chestnut README.
+From the standard Chestnut README:
 
 Open a terminal and type `lein repl` to start a Clojure REPL
 (interactive prompt).
