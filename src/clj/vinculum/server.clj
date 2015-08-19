@@ -149,7 +149,7 @@
 
 (defn run [& [port]]
   (when is-dev?
-    (run-auto-reload))
+    (run-auto-reload 4000))
   (run-web-server port))
 
 (defn -main [& [port]]

@@ -16,18 +16,17 @@
   ;;          {:dev [{:db :sql-dev
   ;;                  :migrator :sql-mig
   ;;                  :seed :sql-seed}]}}
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-3126" :scope "provided"]
-                 [ring "1.3.2"]
-                 [ring/ring-defaults "0.1.4"]
-                 [compojure "1.3.2"] ;; Routing
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.107" :scope "provided"]
+                 [ring "1.4.0"]
+                 [ring/ring-defaults "0.1.5"]
+                 [compojure "1.4.0"] ;; Routing
                  [enlive "1.1.5"]
                  [cljs-ajax "0.3.10"]
-                 [org.omcljs/om "0.8.8"]
-;;                 [org.clojure/core.typed "0.2.84"]
+                 [org.omcljs/om "0.9.0"]
                  [environ "1.0.0"]
                  [sablono "0.2.20"]
-                 [ring-cors "0.1.6"]
+                 [ring-cors "0.1.7"]
                  [liberator "0.12.2"] ;; API generation
                  [sqlingvo "0.7.10"] ;; PostgreSQL -- see https://github.com/r0man/sqlingvo
 ;;                 [ragtime/ragtime.sql.files "0.3.8"] ;; database migrations -- see https://github.com/weavejester/ragtime/wiki/Getting-Started
@@ -59,15 +58,15 @@
     :profiles {:dev {:source-paths ["env/dev/clj"]
                      :test-paths ["test/clj"]
 
-                     :dependencies [[figwheel "0.2.5"]
-                                    [figwheel-sidecar "0.2.5"]
-                                    [com.cemerick/piggieback "0.1.5"]
-                                    [weasel "0.6.0"]]
+                     :dependencies [[figwheel "0.3.7"]
+                                    [figwheel-sidecar "0.3.7"]
+                                    [com.cemerick/piggieback "0.2.1"]
+                                    [weasel "0.7.0"]]
 
                      :repl-options {:init-ns vinculum.server
                                     :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
-                     :plugins [[lein-figwheel "0.2.5"]]
+                     :plugins [[lein-figwheel "0.3.7"]]
 
                      :figwheel {:http-server-root "public"
                                 :server-port 3449
@@ -94,7 +93,7 @@
                          :cljsbuild {:builds {:app
                                               {:source-paths ["env/prod/cljs"]
                                                :compiler
-                                               {:optimizations :advanced
+                                               {:optimizations :whitespace
                                                 :pretty-print false}}}}}}
 
     ;; Make Lein clean clean up the compiled JS files, useful to avoid

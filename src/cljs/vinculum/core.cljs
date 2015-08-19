@@ -6,11 +6,20 @@
 
 (enable-console-print!)
 
-
 (.load js/google "visualization" "1" (clj->js {:packages ["corechart"]}))
 
 (defonce app-state (atom {:weight {:div {:width "100%" :height 600}
-                                   :data []}}))
+                                   :data []}
+                          :todo [{:type :project
+                                  :name "Demo project"
+                                  :tasks [:task {:name "Water the plants"
+                                                 :start "2015-01-01"
+                                                 :start_state :todo
+                                                 :effort "0:05"
+                                                 :recur_pattern "+4d"
+                                                 :events [:event {:date "2015-01-03"
+                                                                  :new_state "done"}]}]}]
+                          :todo-archive []}))
 
 (defn add-rows []
    (js/google.visualization.arrayToDataTable
@@ -38,6 +47,24 @@
         x (.-clientWidth e)
         y (.-clientHeight e)]
     {:width x :height y}))
+
+(defn todo-list [cursor owner {:keys [id] :as opts}]
+  (reify
+    om/IRender
+    (render [_]
+      (html
+       [:div {:id id}
+        [:h1 "Todo list"]
+        "Hello todo!"]))
+
+    om/IDidMount
+    (did-mount [_]
+      (let [project (first cursor)
+            {:keys [name tasks]} project]
+        (print tasks)
+        (html
+         [:div "HEJ HÄST"])))
+    ))
 
 (defn line-chart [cursor owner {:keys [id chart] :as opts}]
   (reify
@@ -89,9 +116,10 @@
        (render [_]
          (html
           [:div {:class "container"}
-           [:h1 "Weight chart"]
+;;           [:h1 "Weight chart"]
            [:div {:id "chart"}]
            [:div {:id "error"}]
            (om/build line-chart (:weight app) {:opts {:id "chart"}})
+           (om/build todo-list (:todo app) {:opts {:id "todo"}})
            ]))))
    app-state {:target (. js/document (getElementById "app"))}))
